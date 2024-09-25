@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+<body>
+  <h1>Add Post</h1>
+  <%- include('./partials/nav.ejs') %>
+
+    <form id="post-form" method="post" action="/posts" enctype="multipart/form-data">
+
+    
+    <div class="form-info">
+      <label>Post Title
+        <input type="text" name="title" required>
+      </label>
+      
+      <label>Image
+        <input type="file" name="image" accept="image/*" required>
+      </label>
+    </div>
+    <div class="form-text">
+      <label>Post Text
+        <textarea name="content" required></textarea>
+      </label>
+    </div>
+    <div class="form-button">
+      <input type="submit" value="Submit">
+    </div>
+  </form>
+</body>
+</html>

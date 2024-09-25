@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+<body>
+  <h1>Login</h1>
+  <%- include('./partials/nav.ejs') %>
+
+  <form id="login-form" method="POST" action="/login">
+    <div class="form-info">
+      <% if (success_msg.length) { %>
+        <p style="color: rgb(199, 240, 243);"><%= success_msg %></p>
+      <% } %>
+      <% if (error_msg.length) { %>
+        <p style="color:#000;"><%= error_msg %></p>
+      <% } %>
+      <label>Username
+        <input type="text" name="username" required>
+      </label>
+      <label>Password
+        <input type="password" name="password" required>
+      </label>
+    </div>
+    <div class="form-button">
+      <input type="submit" value="Login">
+    </div>
+  </form>
+
+  <% if (success_msg.length) { %>
+    <script>
+      setTimeout(() => {
+        window.location.href = '/posts'; 
+      }, 1500);
+    </script>
+  <% } %>
+</body>
+</html>

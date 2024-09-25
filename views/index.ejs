@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+<body>
+  <%- include('./partials/nav.ejs') %>
+    <% if (user) { %>
+      <div style="display: flex; justify-content: flex-end; margin: 20px;">
+        <% if (user) { %>
+          <form action="/logout" method="GET" style="display:inline;" 
+          <p style="margin-right: 10px; color: #fff;">Hello, <%= user.username %>!</p>
+            <input type="submit" value="Logout" class="btn">
+          </form>
+        <% } %>
+      </div>
+    <% } %>
+    
+  <h1>Personal Blog</h1>
+  <p>On our website, you can add posts with pictures and manage them.</p>
+
+  <form action="/posts/search" method="get">
+    <div class="form-info">
+      <label>
+        <input type="text" name="q" placeholder="Searching posts..." required>
+      </label>
+    </div>
+    <div class="form-button">
+      <input type="submit" value="Search...">
+    </div>
+  </form>
+</body>
+</html>

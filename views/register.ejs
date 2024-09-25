@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+<body>
+  <h1>Register</h1>
+  <%- include('./partials/nav.ejs') %>
+
+  <form id="register-form" method="POST" action="/register">
+    <div class="form-info">
+      <% if (success_msg.length) { %>
+        <p style="color:#fff;;"><%= success_msg %></p>
+        <script>
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 2500);
+        </script>
+      <% } %>
+      <% if (error_msg.length) { %>
+        <p style="color:#000;"><%= error_msg %></p>
+      <% } %>
+      <label>Username
+        <input type="text" name="username" required>
+      </label>
+      <label>Password
+        <input type="password" name="password" required>
+      </label>
+    </div>
+    <div class="form-button">
+      <input type="submit" value="Register">
+    </div>
+  </form>
+</body>
+</html>

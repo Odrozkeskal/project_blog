@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs') %>
+<body>
+  <%- include('./partials/nav.ejs') %>
+  <h1>Searching results: "<%= searchTerm %>":</h1>
+  <ul>
+    <% if (posts.length) { %>
+      <% posts.forEach(post => { %>
+        <li>
+          <article>
+            <h2>
+              <a href="/posts/<%= post.id %>"><%= post.title %></a>
+            </h2>
+            <p><%= post.content %></p>
+            <div class="info">
+              <span><%= post.created_at ? new Date(post.created_at).toLocaleDateString() : 'No date' %></span>
+              <span><%= post.author %></span>
+            </div>
+          </article>
+        </li>
+      <% }); %>
+    <% } else { %>
+      <p>There are no posts matching your request.</p>
+    <% } %>
+  </ul>
+</body>
+</html>
