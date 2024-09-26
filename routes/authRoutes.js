@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const db = require('../db'); // Импортируем файл подключения к базе данных
+const db = require('../db'); 
 const passport = require('passport');
 
-// GET-метод для страницы регистрации
+
 router.get('/register', (req, res) => {
     const success_msg = req.flash('success_msg');
     const error_msg = req.flash('error_msg');
     res.render('register', { success_msg, error_msg, title: 'Register' });
 });
 
-// POST-метод для регистрации
+
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log('Пытаемся зарегистрировать пользователя:', username);
+    console.log('We are trying to register a user:', username);
 
     try {
         // Используем Knex для вставки пользователя
@@ -24,10 +24,10 @@ router.post('/register', async (req, res) => {
             username,
             password: hashedPassword
         });
-        console.log('Пользователь успешно зарегистрирован');
+        console.log('The user has been successfully registered');
         req.flash('success_msg', 'Registration was successful. Now you can enter.');
         
-        // Рендерим страницу с сообщением и устанавливаем задержку для редиректа
+       
         res.render('register', { 
             success_msg: req.flash('success_msg'), 
             error_msg: '', 
@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
             redirect: true 
         });
     } catch (error) {
-        console.error('Ошибка регистрации:', error);
+        console.error('Registration error:', error);
         req.flash('error_msg', 'Registration error. Try again.');
         res.render('register', { 
             success_msg: '', 
@@ -46,7 +46,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// GET-метод для страницы входа
+
 router.get('/login', (req, res) => {
     const success_msg = req.flash('success_msg');
     const error_msg = req.flash('error_msg');
@@ -76,7 +76,7 @@ router.post('/login', (req, res, next) => {
 
             // Сохраните userId в сессии
             req.session.userId = user.id;
-            console.log('User ID сохранен в сессии:', req.session.userId); // Логирование для отладки
+            console.log('The user ID is saved in the session:', req.session.userId); 
             req.flash('success_msg', 'You have successfully logged in.');
             return res.render('login', {
                 success_msg: req.flash('success_msg'),
