@@ -4,29 +4,29 @@
 module.exports = {
 
   development: {
-    client: 'pg', // Используем PostgreSQL
+    client: 'pg', 
     connection: {
-      host: 'localhost', // Хост базы данных
-      user: 'postgres', // Ваш пользователь
-      password: 'root', // Ваш пароль
-      database: 'blog' // Название вашей базы данных
+      host: 'localhost', 
+      user: 'postgres', 
+      password: 'root', 
+      database: 'blog' 
     },
     migrations: {
-      tableName: 'knex_migrations' // Имя таблицы для миграций
+      tableName: 'knex_migrations' 
     }
   },
 
   production: {
-    client: 'pg', // Используем PostgreSQL
+    client: 'pg', 
     connection: {
-      host: 'ep-tight-fire-a2uwlm4w.eu-central-1.aws.neon.tech', // Хост базы данных
-      user: 'medicines_owner', // Ваш пользователь
-      password: 'fc5OxGyiAT4W', // Ваш пароль
-      database: 'Blog', // Название вашей базы данных
+      host: 'ep-tight-fire-a2uwlm4w.eu-central-1.aws.neon.tech',
+      user: 'medicines_owner', 
+      password: 'fc5OxGyiAT4W', 
+      database: 'Blog', // 
       ssl: { rejectUnauthorized: false }
     },
     migrations: {
-      tableName: 'knex_migrations' // Имя таблицы для миграций
+      tableName: 'knex_migrations' 
     }
   },
 }
