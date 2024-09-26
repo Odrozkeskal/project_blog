@@ -52,7 +52,7 @@ exports.getPost = async (req, res) => {
       return res.redirect('/posts');
     }
 
-    console.log('Пост успешно найден:', post);
+    console.log('The post was found successfully:', post);
     res.render('post', { title, post, userId: req.session.userId });
   } catch (error) {
     console.error('Error when receiving a post:', error);
@@ -65,7 +65,7 @@ exports.searchPosts = async (req, res) => {
   const title = 'Search Results';
   const searchTerm = req.query.q; 
 
-  console.log(`Запрос на поиск постов по термин: ${searchTerm}`);
+  console.log(`Search query for posts by term: ${searchTerm}`);
 
   try {
     const posts = await knex('posts')
@@ -131,7 +131,7 @@ exports.editPostForm = async (req, res) => {
     const user = await knex('users').where('id', userId).first();
     const isAdmin = user && user.role === 'admin';
 
-    // Проверка прав доступа
+   
     if (!isAdmin && post.user_id !== userId) {
       req.flash('error_msg', 'You do not have the rights to edit this post');
       console.warn('Attempt to edit a post without rights:', postId);
@@ -151,15 +151,15 @@ exports.updatePost = async (req, res) => {
   const { title, content } = req.body;
   const imagePath = req.file ? req.file.path : null;
 
-  console.log(`Запрос на обновление поста с ID: ${postId}`);
-  console.log('Данные для обновления поста:', { title, content, imagePath });
+  console.log(`Request to update the post by ID: ${postId}`);
+  console.log('Data for updating the post:', { title, content, imagePath });
 
   try {
     const post = await knex('posts').where('id', postId).first();
 
     if (!post) {
       req.flash('error_msg', 'Post has not found');
-      console.warn('Пост не найден при обновлении:', postId);
+      console.warn('The post was not found when updating:', postId);
       return res.redirect('/posts');
     }
 
@@ -167,10 +167,10 @@ exports.updatePost = async (req, res) => {
     const user = await knex('users').where('id', userId).first();
     const isAdmin = user && user.role === 'admin';
 
-    // Проверка прав доступа
+    
     if (!isAdmin && post.user_id !== userId) {
       req.flash('error_msg', 'You do not have the rights to edit this post');
-      console.warn('Попытка обновления поста без прав:', postId);
+      console.warn('Attempt to update a post without rights:', postId);
       return res.redirect('/posts');
     }
 
@@ -179,10 +179,10 @@ exports.updatePost = async (req, res) => {
       .update({ title, content, image: imagePath });
 
     req.flash('success_msg', 'The post has been successfully updated');
-    console.log('Пост успешно обновлен:', postId);
+    console.log('The post has been successfully updated:', postId);
     res.redirect(`/posts/${postId}`);
   } catch (error) {
-    console.error('Ошибка при обновлении поста:', error);
+    console.error('Error updating the post:', error);
     req.flash('error_msg', 'Error updating the post');
     return res.redirect(`/posts/${postId}/edit`);
   }
@@ -191,42 +191,42 @@ exports.updatePost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   const postId = req.params.id;
 
-  console.log(`Запрос на удаление поста с ID: ${postId}`);
+  console.log(`Request to delete a post by ID: ${postId}`);
 
   try {
     const post = await knex('posts').where('id', postId).first();
 
     if (!post) {
       req.flash('error_msg', 'Post has not found');
-      console.warn('Пост не найден при удалении:', postId);
-      return res.status(404).send('Пост не найден');
+      console.warn('The post was not found when deleted:', postId);
+      return res.status(404).send('The post was not found');
     }
 
     const userId = req.session.userId;
     const user = await knex('users').where('id', userId).first();
     const isAdmin = user && user.role === 'admin';
 
-    console.log(`Проверка прав пользователя: userId=${userId}, post.user_id=${post.user_id}, isAdmin=${isAdmin}`);
+    console.log(`Checking user rights: userId=${userId}, post.user_id=${post.user_id}, isAdmin=${isAdmin}`);
 
-    // Проверка прав доступа
+   
     if (!isAdmin && post.user_id !== userId) {
       req.flash('error_msg', 'You do not have the rights to delete this post');
-      console.warn('Попытка удаления поста без прав:', postId);
-      return res.status(403).send('Доступ запрещен');
+      console.warn('Attempt to delete a post without rights:', postId);
+      return res.status(403).send('Access is denied');
     }
 
     await knex('posts').where('id', postId).del();
     req.flash('success_msg', 'The post was successfully deleted');
-    console.log('Пост успешно удален:', postId);
-    res.status(204).send(); // Отправляем статус 204
+    console.log('The post was successfully deleted:', postId);
+    res.status(204).send(); 
   } catch (error) {
-    console.error('Ошибка при удалении поста:', error);
-    res.status(500).send('Ошибка при удалении поста');
+    console.error('Error when deleting a post:', error);
+    res.status(500).send('Error when deleting a post');
   }
 };
 
 exports.getMyPosts = async (req, res) => {
-  console.log("Запрос на 'Мои посты' от пользователя:", req.session.userId);
+  console.log("A request for 'My Posts' from a user:", req.session.userId);
   const userId = req.session.userId;
 
   if (!userId) {
@@ -239,11 +239,11 @@ exports.getMyPosts = async (req, res) => {
       .where('user_id', userId)
       .orderBy('created_at', 'desc');
 
-    console.log('Посты успешно получены:', posts);
+    console.log('Posts have been successfully received:', posts);
     res.render('my-posts', { title: 'Мои посты', posts, userId });
   } catch (error) {
-    console.error('Ошибка при получении постов пользователя:', error);
-    res.status(500).send('Ошибка при получении постов');
+    console.error('Error when receiving user posts:', error);
+    res.status(500).send('Error when receiving posts');
   }
 };
 
