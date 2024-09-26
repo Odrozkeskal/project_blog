@@ -13,17 +13,17 @@ function ensureAuthenticated(req, res, next) {
 }
 
 // Маршруты для постов
-router.get('/', postController.getAllPosts); // Получить все посты
-router.get('/search', postController.searchPosts); // Поиск постов
-router.get('/my-posts', ensureAuthenticated, postController.getMyPosts); // Мои посты
-router.get('/:id', postController.getPost); // Получить пост по ID
+router.get('/', postController.getAllPosts); 
+router.get('/search', postController.searchPosts); 
+router.get('/my-posts', ensureAuthenticated, postController.getMyPosts); 
+router.get('/:id', postController.getPost); 
 
 
 // Защищенные маршруты
-router.get('/add', ensureAuthenticated, postController.renderAddPostForm); // Форма добавления поста
-router.post('/', ensureAuthenticated, uploadSingle, postController.createPost); // Создать пост
-router.get('/edit/:id', ensureAuthenticated, postController.editPostForm); // Форма редактирования поста
-router.put('/:id', ensureAuthenticated, uploadSingle, postController.updatePost); // Обновить пост
-router.delete('/:id', ensureAuthenticated, postController.deletePost); // Удалить пост
+router.get('/add', ensureAuthenticated, postController.renderAddPostForm); а
+router.post('/', ensureAuthenticated, uploadSingle, postController.createPost);
+router.get('/edit/:id', ensureAuthenticated, postController.editPostForm); 
+router.put('/:id', ensureAuthenticated, uploadSingle, postController.updatePost); 
+router.delete('/:id', ensureAuthenticated, postController.deletePost); 
 
 module.exports = router;
