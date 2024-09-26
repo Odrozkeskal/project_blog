@@ -185,17 +185,17 @@ textarea {
 
 .form-button input,
 .btn {
-  border: none; /* Убираем рамку */
-  background-color: rgba(0, 0, 0, 0.6); /* Цвет фона кнопки */
-  color: #fff; /* Цвет текста */
-  padding: 12px 20px; /* Увеличенные отступы */
-  font-size: 16px; /* Увеличенный размер шрифта */
-  cursor: pointer; /* Курсор при наведении */
-  border-radius: 5px; /* Скругление углов */
-  transition: background-color 0.3s; /* Плавный переход цвета */
+  border: none; 
+  background-color: rgba(0, 0, 0, 0.6); 
+  color: #fff; 
+  padding: 12px 20px; 
+  font-size: 16px; 
+  cursor: pointer; 
+  border-radius: 5px; 
+  transition: background-color 0.3s; 
 }
 
 .form-button input:hover,
 .btn:hover {
-  background-color: rgba(0, 0, 0, 0.8); /* Цвет фона при наведении */
+  background-color: rgba(0, 0, 0, 0.8); 
 }
