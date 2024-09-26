@@ -1,7 +1,7 @@
 
 const path = require('path');
 const multer = require('multer');
-const knex = require('../db'); // Подключение к Knex
+const knex = require('../db'); 
 
 // Настройка multer
 const storage = multer.diskStorage({
@@ -18,7 +18,7 @@ const uploadSingle = upload.single('image');
 
 exports.getAllPosts = async (req, res) => {
   const title = 'Posts';
-  console.log('Запрос на получение всех постов');
+  console.log('Request to receive all posts');
 
   try {
     const posts = await knex('posts')
@@ -26,18 +26,18 @@ exports.getAllPosts = async (req, res) => {
       .leftJoin('users', 'posts.user_id', 'users.id')
       .orderBy('created_at', 'desc');
 
-    console.log('Посты успешно получены:', posts);
+    console.log('Posts have been successfully received:', posts);
     res.render('posts', { title, posts, userId: req.session.userId });
   } catch (error) {
-    console.error('Ошибка при получении постов:', error);
-    res.status(500).send('Ошибка при получении постов');
+    console.error('Error when receiving posts:', error);
+    res.status(500).send('Error when receiving posts');
   }
 };
 
 exports.getPost = async (req, res) => {
   const title = 'Post';
   const postId = req.params.id;
-  console.log(`Запрос на получение поста с ID: ${postId}`);
+  console.log(`Request to receive a post by ID: ${postId}`);
 
   try {
     const post = await knex('posts')
@@ -48,22 +48,22 @@ exports.getPost = async (req, res) => {
 
     if (!post) {
       req.flash('error_msg', 'Post has not found');
-      console.warn('Пост не найден:', postId);
+      console.warn('The post was not found:', postId);
       return res.redirect('/posts');
     }
 
     console.log('Пост успешно найден:', post);
     res.render('post', { title, post, userId: req.session.userId });
   } catch (error) {
-    console.error('Ошибка при получении поста:', error);
-    res.status(500).send('Ошибка при получении поста');
+    console.error('Error when receiving a post:', error);
+    res.status(500).send('Error when receiving a post');
   }
 };
 
 
 exports.searchPosts = async (req, res) => {
   const title = 'Search Results';
-  const searchTerm = req.query.q; // Получаем поисковый термин из запроса
+  const searchTerm = req.query.q; 
 
   console.log(`Запрос на поиск постов по термин: ${searchTerm}`);
 
@@ -71,20 +71,20 @@ exports.searchPosts = async (req, res) => {
     const posts = await knex('posts')
       .select('posts.*', 'users.username AS author')
       .leftJoin('users', 'posts.user_id', 'users.id')
-      .where('title', 'like', `%${searchTerm}%`) // Ищем по заголовку
-      .orWhere('content', 'like', `%${searchTerm}%`) // Ищем по содержимому
+      .where('title', 'like', `%${searchTerm}%`) 
+      .orWhere('content', 'like', `%${searchTerm}%`) 
       .orderBy('created_at', 'desc');
 
-    console.log('Результаты поиска:', posts);
+    console.log('Search Results:', posts);
     res.render('search-results', { title, posts, searchTerm });
   } catch (error) {
-    console.error('Ошибка при поиске постов:', error);
-    res.status(500).send('Ошибка при поиске постов');
+    console.error('Error when searching for posts:', error);
+    res.status(500).send('Error when searching for posts');
   }
 };
 
 exports.createPost = async (req, res) => {
-  console.log('Запрос на создание поста');
+  console.log('Request to create a post');
   
   const { title, content } = req.body;
   const imagePath = req.file ? req.file.path : null;
@@ -92,11 +92,11 @@ exports.createPost = async (req, res) => {
 
   if (!userId) {
     req.flash('error_msg', 'You must be logged in to add a post.');
-    console.warn('Неавторизованный доступ к созданию поста');
+    console.warn('Unauthorized access to post creation');
     return res.redirect('/login');
   }
 
-  console.log('Данные поста:', { title, content, imagePath, userId });
+  console.log('the content of the post:', { title, content, imagePath, userId });
 
   try {
     const [post] = await knex('posts')
@@ -104,10 +104,10 @@ exports.createPost = async (req, res) => {
       .returning('*');
 
     req.flash('success_msg', 'The post has been added successfully');
-    console.log('Пост успешно добавлен:', post);
+    console.log('The post has been added successfully:', post);
     res.redirect(`/posts/${post.id}`);
   } catch (error) {
-    console.error('Ошибка при добавлении поста:', error);
+    console.error('Error when adding a post:', error);
     req.flash('error_msg', 'Error adding a post');
     return res.redirect('/posts/add');
   }
@@ -116,14 +116,14 @@ exports.createPost = async (req, res) => {
 exports.editPostForm = async (req, res) => {
   const postId = req.params.id;
   const title = 'Edit Post';
-  console.log(`Запрос на редактирование поста с ID: ${postId}`);
+  console.log(`Request to edit a post by ID: ${postId}`);
 
   try {
     const post = await knex('posts').where('id', postId).first();
 
     if (!post) {
       req.flash('error_msg', 'Post has not found');
-      console.warn('Пост не найден для редактирования:', postId);
+      console.warn('The post was not found for editing:', postId);
       return res.redirect('/posts');
     }
 
@@ -134,7 +134,7 @@ exports.editPostForm = async (req, res) => {
     // Проверка прав доступа
     if (!isAdmin && post.user_id !== userId) {
       req.flash('error_msg', 'You do not have the rights to edit this post');
-      console.warn('Попытка редактирования поста без прав:', postId);
+      console.warn('Attempt to edit a post without rights:', postId);
       return res.redirect('/posts');
     }
 
