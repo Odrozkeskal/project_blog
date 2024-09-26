@@ -1,5 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
-const db = require('./db'); // Импортируйте ваш файл подключения к базе данных
+const db = require('./db'); 
 const bcrypt = require('bcrypt');
 
 // Настройка стратегии
@@ -10,37 +10,37 @@ function initialize(passport) {
         const user = await db('users').where({ username }).first();
 
         if (!user) {
-          console.log('Пользователь не найден'); // Логируем
-          return done(null, false, { message: 'Пользователь не найден' });
+          console.log('The user was not found'); 
+          return done(null, false, { message: 'The user was not found' });
         }
 
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
-          console.log('Неверный пароль'); // Логируем
-          return done(null, false, { message: 'Неверный пароль' });
+          console.log('Invalid password'); 
+          return done(null, false, { message: 'Invalid password' });
         }
 
-        console.log('Пользователь аутентифицирован:', user); // Логируем
+        console.log('The user is authenticated:', user);
         return done(null, user);
       } catch (error) {
-        console.error('Ошибка аутентификации:', error); // Логируем
+        console.error('Authentication error:', error); 
         return done(error);
       }
     }
   ));
 
   passport.serializeUser((user, done) => {
-    console.log('Сериализация пользователя:', user.id); // Логируем
+    console.log('User Serialization:', user.id); 
     done(null, user.id);
   });
 
   passport.deserializeUser(async (id, done) => {
     try {
       const user = await db('users').where({ id }).first();
-      console.log('Десериализация пользователя:', user); // Логируем
+      console.log('Deserialization of the user:', user); 
       done(null, user);
     } catch (error) {
-      console.error('Ошибка десериализации:', error); // Логируем
+      console.error('Deserialization error:', error); 
       done(error);
     }
   });
