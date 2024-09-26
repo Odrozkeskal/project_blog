@@ -13,16 +13,15 @@ const initializePassport = require('./passport-config');
 const app = express();
 const PORT = 3000;
 const db = require('./db');
+
 // Инициализация Passport
 initializePassport(passport);
 
-// Установка шаблонизатора EJS
 app.set('view engine', 'ejs');
 
 // Функция для создания пути к шаблонам
 const createPath = (page) => path.resolve(__dirname, 'views', `${page}.ejs`);
 
-// Middleware
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('styles'));
@@ -36,7 +35,6 @@ app.use(session({
   saveUninitialized: false,
 }));
 
-// Добавьте middleware для Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -60,28 +58,20 @@ function isAuthenticated(req, res, next) {
   res.redirect('/login'); // оставляем редирект на /login
 }
 
-
-
-// Использование маршрутов
 app.use('/posts', postRoutes);
 app.use('/', authRoutes);
-
-// Маршрут для добавления поста
 app.get('/add-post', isAuthenticated, postController.renderAddPostForm);
 
-// Главная страница
 app.get('/', (req, res) => {
   const title = 'Home';
   res.render(createPath('index'), { title });
 });
 
-// Обработка 404 ошибок
 app.use((req, res) => {
   const title = 'Error Page';
   res.status(404).render(createPath('error'), { title });
 });
 
-// Запуск сервера
 app.listen(PORT, (error) => {
   if (error) {
     console.log(error);
