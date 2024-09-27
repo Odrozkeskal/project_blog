@@ -20,7 +20,7 @@ router.get('/:id', postController.getPost);
 
 
 // Защищенные маршруты
-router.get('/add', ensureAuthenticated, postController.renderAddPostForm); а
+router.get('/add', ensureAuthenticated, postController.renderAddPostForm); 
 router.post('/', ensureAuthenticated, uploadSingle, postController.createPost);
 router.get('/edit/:id', ensureAuthenticated, postController.editPostForm); 
 router.put('/:id', ensureAuthenticated, uploadSingle, postController.updatePost); 
